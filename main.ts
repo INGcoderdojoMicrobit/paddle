@@ -84,8 +84,10 @@ function create_ball () {
     ball.x = randint(0, 120)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.LeftPaddles, function (sprite, otherSprite) {
-    sprite.vx = sprite.vx * -1
-    info.player1.changeScoreBy(1)
+    if (sprite.vx < 0) {
+        sprite.vx = sprite.vx * -1
+        info.player1.changeScoreBy(1)
+    }
 })
 let ball: Sprite = null
 let left_paddle: Sprite = null
@@ -98,10 +100,8 @@ info.player2.setLife(3)
 game.onUpdate(function () {
     if (ball.x <= 4) {
         info.player1.changeLifeBy(-1)
-        scene.cameraShake(4, 200)
     }
     if (ball.x >= 156) {
         info.player2.changeLifeBy(-1)
-        scene.cameraShake(4, 200)
     }
 })
