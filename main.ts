@@ -2,25 +2,23 @@ namespace SpriteKind {
     export const LeftPaddles = SpriteKind.create()
     export const RightPaddles = SpriteKind.create()
 }
-/**
- * let tileMap: Image = null
- * 
- * let orangeBlock: Image = null
- * 
- * orangeBlock = image.create(16, 16)
- * 
- * orangeBlock.fill(4)
- * 
- * orangeBlock.drawRect(0, 0, 16, 16, 11)
- * 
- * scene.setTile(1, orangeBlock, true)
- * 
- * tileMap = image.create(scene.screenWidth() / 16 + 1, scene.screenHeight() / 16)
- * 
- * tileMap.drawLine(scene.screenWidth() / 32, 0, scene.screenWidth() / 32, scene.screenHeight() / 16, 1)
- * 
- * scene.setTileMap(tileMap)
- */
+// let tileMap: Image = null
+// 
+// let orangeBlock: Image = null
+// 
+// orangeBlock = image.create(16, 16)
+// 
+// orangeBlock.fill(4)
+// 
+// orangeBlock.drawRect(0, 0, 16, 16, 11)
+// 
+// scene.setTile(1, orangeBlock, true)
+// 
+// tileMap = image.create(scene.screenWidth() / 16 + 1, scene.screenHeight() / 16)
+// 
+// tileMap.drawLine(scene.screenWidth() / 32, 0, scene.screenWidth() / 32, scene.screenHeight() / 16, 1)
+// 
+// scene.setTileMap(tileMap)
 sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, otherSprite) {
     sprite.vx = sprite.vx * -1
     info.player2.changeScoreBy(1)
@@ -89,6 +87,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.LeftPaddles, function (sprite, o
         info.player1.changeScoreBy(1)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.vy = sprite.vy * -1
+})
 let ball: Sprite = null
 let left_paddle: Sprite = null
 let right_paddle: Sprite = null
@@ -97,6 +98,11 @@ create_left_paddle()
 create_right_paddle()
 info.player1.setLife(3)
 info.player2.setLife(3)
+info.player1.setScore(0)
+info.player2.setScore(0)
+let mySprite = sprites.create(image.create(320, 1), SpriteKind.Enemy)
+mySprite.setPosition(0, 15)
+mySprite.image.fill(1)
 game.onUpdate(function () {
     if (ball.x <= 4) {
         info.player1.changeLifeBy(-1)
