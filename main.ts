@@ -31,8 +31,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function (sprite, otherSp
         }
     }
     if (uderzonybloczek == 1) {
-        otherSprite.destroy()
-        howmanyblocks += -1
+        otherSprite.z = otherSprite.z - 1
+        if (otherSprite.z <= 0) {
+            otherSprite.destroy()
+            howmanyblocks += -1
+        }
     }
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -63,16 +66,43 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, 
 })
 function create_bloczek () {
     if (howmanyblocks < 8) {
-        nowybloczek = sprites.create(img`
-            6 7 7 6 
-            7 7 7 7 
-            7 7 7 7 
-            7 7 7 7 
-            7 7 7 7 
-            7 7 7 7 
-            7 7 7 7 
-            6 7 7 6 
-            `, SpriteKind.Block)
+        if (Math.percentChance(50)) {
+            nowybloczek = sprites.create(img`
+                6 7 7 6 
+                7 7 7 7 
+                7 7 7 7 
+                7 7 7 7 
+                7 7 7 7 
+                7 7 7 7 
+                7 7 7 7 
+                6 7 7 6 
+                `, SpriteKind.Block)
+            nowybloczek.z = 1
+        } else if (Math.percentChance(50)) {
+            nowybloczek = sprites.create(img`
+                6 2 2 6 
+                2 2 2 2 
+                2 2 2 2 
+                2 2 2 2 
+                2 2 2 2 
+                2 2 2 2 
+                2 2 2 2 
+                6 2 2 6 
+                `, SpriteKind.Block)
+            nowybloczek.z = 2
+        } else {
+            nowybloczek = sprites.create(img`
+                6 2 2 6 
+                d d d d 
+                d d d d 
+                2 5 5 2 
+                2 5 5 2 
+                d d d d 
+                d d d d 
+                6 2 2 6 
+                `, SpriteKind.Block)
+            nowybloczek.z = 4
+        }
         nowybloczek.x = randint(60, 100)
         nowybloczek.y = randint(25, 110)
         howmanyblocks += 1
