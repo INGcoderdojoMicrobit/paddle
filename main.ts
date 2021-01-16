@@ -64,6 +64,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, 
         info.player2.changeScoreBy(1)
     }
 })
+function following () {
+    if (right_paddle.vy < ball.vy) {
+        right_paddle.setVelocity(0, 30)
+    } else if (right_paddle.vy > ball.vy) {
+        right_paddle.setVelocity(0, -30)
+    }
+}
 function create_bloczek () {
     if (howmanyblocks < 8) {
         if (Math.percentChance(50)) {
@@ -125,7 +132,7 @@ function create_right_paddle () {
         3 4 
         3 3 
         `, SpriteKind.RightPaddles)
-    controller.player2.moveSprite(right_paddle, 0, 150)
+    controller.player2.moveSprite(right_paddle, 0, 30)
     right_paddle.setFlag(SpriteFlag.StayInScreen, true)
     right_paddle.x = 159
 }
@@ -146,7 +153,7 @@ function create_left_paddle () {
         4 3 
         3 3 
         `, SpriteKind.LeftPaddles)
-    controller.player1.moveSprite(nowybloczek, 0, 150)
+    controller.player1.moveSprite(nowybloczek, 0, 30)
     nowybloczek.setFlag(SpriteFlag.StayInScreen, true)
     nowybloczek.x = 1
 }
@@ -179,9 +186,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 sprites.onOverlap(SpriteKind.LeftPaddles, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.y = 22
 })
+let nowybloczek: Sprite = null
 let ball: Sprite = null
 let right_paddle: Sprite = null
-let nowybloczek: Sprite = null
 let uderzonybloczek = 0
 let howmanyblocks = 0
 howmanyblocks = 0
@@ -202,6 +209,7 @@ game.onUpdate(function () {
     if (ball.x >= 156) {
         info.player2.changeLifeBy(-1)
     }
+    following()
 })
 game.onUpdateInterval(2000, function () {
     create_bloczek()
