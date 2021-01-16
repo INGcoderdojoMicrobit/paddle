@@ -20,8 +20,10 @@ namespace SpriteKind {
 // 
 // scene.setTileMap(tileMap)
 sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, otherSprite) {
-    sprite.vx = sprite.vx * -1
-    info.player2.changeScoreBy(1)
+    if (sprite.vx > 0) {
+        sprite.vx = sprite.vx * -1
+        info.player2.changeScoreBy(1)
+    }
 })
 function create_right_paddle () {
     right_paddle = sprites.create(img`
@@ -79,7 +81,7 @@ function create_ball () {
     ball.setVelocity(40, 40)
     ball.setFlag(SpriteFlag.BounceOnWall, true)
     ball.setFlag(SpriteFlag.ShowPhysics, true)
-    ball.x = randint(0, 120)
+    ball.x = randint(40, 120)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.LeftPaddles, function (sprite, otherSprite) {
     if (sprite.vx < 0) {
