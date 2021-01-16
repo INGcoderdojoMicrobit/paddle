@@ -73,7 +73,7 @@ function following () {
 }
 function create_bloczek () {
     if (howmanyblocks < 8) {
-        if (Math.percentChance(50)) {
+        if (Math.percentChance(70)) {
             nowybloczek = sprites.create(img`
                 6 7 7 6 
                 7 7 7 7 
@@ -85,7 +85,7 @@ function create_bloczek () {
                 6 7 7 6 
                 `, SpriteKind.Block)
             nowybloczek.z = 1
-        } else if (Math.percentChance(50)) {
+        } else if (Math.percentChance(70)) {
             nowybloczek = sprites.create(img`
                 6 2 2 6 
                 2 2 2 2 
@@ -211,6 +211,6 @@ game.onUpdate(function () {
     }
     following()
 })
-game.onUpdateInterval(2000, function () {
+game.onUpdateInterval(5000, function () {
     create_bloczek()
 })
