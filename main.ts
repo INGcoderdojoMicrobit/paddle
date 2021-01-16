@@ -1,9 +1,41 @@
 namespace SpriteKind {
     export const LeftPaddles = SpriteKind.create()
     export const RightPaddles = SpriteKind.create()
+    export const Block = SpriteKind.create()
 }
 sprites.onOverlap(SpriteKind.RightPaddles, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.y = 22
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function (sprite, otherSprite) {
+    uderzonybloczek = 0
+    if (sprite.vx < 0) {
+        if (sprite.x >= otherSprite.x + 4) {
+            sprite.vx = sprite.vx * -1
+            uderzonybloczek = 1
+        }
+    } else {
+        if (sprite.x + 5 <= otherSprite.x) {
+            sprite.vx = Math.abs(sprite.vx) * -1
+            uderzonybloczek = 1
+        }
+    }
+    if (sprite.vy > 0) {
+        if (sprite.y + 7 <= otherSprite.y) {
+            sprite.vy = Math.abs(sprite.vy) * -1
+            uderzonybloczek = 1
+        }
+    } else {
+        if (sprite.y >= otherSprite.y + 7) {
+            sprite.vy = Math.abs(sprite.vy)
+            uderzonybloczek = 1
+        }
+    }
+    if (uderzonybloczek == 1) {
+        otherSprite.destroy()
+    }
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    create_bloczek()
 })
 // let tileMap: Image = null
 // 
@@ -28,6 +60,20 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, 
         info.player2.changeScoreBy(1)
     }
 })
+function create_bloczek () {
+    nowybloczek = sprites.create(img`
+        6 7 7 6 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        7 7 7 7 
+        6 7 7 6 
+        `, SpriteKind.Block)
+    nowybloczek.x = randint(60, 100)
+    nowybloczek.y = randint(25, 110)
+}
 function create_right_paddle () {
     right_paddle = sprites.create(img`
         3 3 
@@ -50,7 +96,7 @@ function create_right_paddle () {
     right_paddle.x = 159
 }
 function create_left_paddle () {
-    left_paddle = sprites.create(img`
+    nowybloczek = sprites.create(img`
         3 3 
         3 5 
         4 3 
@@ -66,9 +112,9 @@ function create_left_paddle () {
         4 3 
         3 3 
         `, SpriteKind.LeftPaddles)
-    controller.player1.moveSprite(left_paddle, 0, 150)
-    left_paddle.setFlag(SpriteFlag.StayInScreen, true)
-    left_paddle.x = 1
+    controller.player1.moveSprite(nowybloczek, 0, 150)
+    nowybloczek.setFlag(SpriteFlag.StayInScreen, true)
+    nowybloczek.x = 1
 }
 function create_ball () {
     ball = sprites.create(img`
@@ -85,6 +131,7 @@ function create_ball () {
     ball.setFlag(SpriteFlag.BounceOnWall, true)
     ball.setFlag(SpriteFlag.ShowPhysics, true)
     ball.x = randint(40, 120)
+    ball.y = randint(50, 70)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.LeftPaddles, function (sprite, otherSprite) {
     if (sprite.vx < 0) {
@@ -99,11 +146,13 @@ sprites.onOverlap(SpriteKind.LeftPaddles, SpriteKind.Enemy, function (sprite, ot
     sprite.y = 22
 })
 let ball: Sprite = null
-let left_paddle: Sprite = null
 let right_paddle: Sprite = null
+let nowybloczek: Sprite = null
+let uderzonybloczek = 0
 create_ball()
 create_left_paddle()
 create_right_paddle()
+create_bloczek()
 info.player1.setLife(3)
 info.player2.setLife(3)
 info.player1.setScore(0)
