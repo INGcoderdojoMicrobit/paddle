@@ -32,6 +32,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Block, function (sprite, otherSp
     }
     if (uderzonybloczek == 1) {
         otherSprite.destroy()
+        howmanyblocks += -1
     }
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -61,18 +62,21 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.RightPaddles, function (sprite, 
     }
 })
 function create_bloczek () {
-    nowybloczek = sprites.create(img`
-        6 7 7 6 
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        7 7 7 7 
-        6 7 7 6 
-        `, SpriteKind.Block)
-    nowybloczek.x = randint(60, 100)
-    nowybloczek.y = randint(25, 110)
+    if (howmanyblocks < 8) {
+        nowybloczek = sprites.create(img`
+            6 7 7 6 
+            7 7 7 7 
+            7 7 7 7 
+            7 7 7 7 
+            7 7 7 7 
+            7 7 7 7 
+            7 7 7 7 
+            6 7 7 6 
+            `, SpriteKind.Block)
+        nowybloczek.x = randint(60, 100)
+        nowybloczek.y = randint(25, 110)
+        howmanyblocks += 1
+    }
 }
 function create_right_paddle () {
     right_paddle = sprites.create(img`
@@ -149,10 +153,11 @@ let ball: Sprite = null
 let right_paddle: Sprite = null
 let nowybloczek: Sprite = null
 let uderzonybloczek = 0
+let howmanyblocks = 0
+howmanyblocks = 0
 create_ball()
 create_left_paddle()
 create_right_paddle()
-create_bloczek()
 info.player1.setLife(3)
 info.player2.setLife(3)
 info.player1.setScore(0)
@@ -167,4 +172,7 @@ game.onUpdate(function () {
     if (ball.x >= 156) {
         info.player2.changeLifeBy(-1)
     }
+})
+game.onUpdateInterval(2000, function () {
+    create_bloczek()
 })
