@@ -2,6 +2,9 @@ namespace SpriteKind {
     export const LeftPaddles = SpriteKind.create()
     export const RightPaddles = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.RightPaddles, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.y = 22
+})
 // let tileMap: Image = null
 // 
 // let orangeBlock: Image = null
@@ -90,7 +93,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.LeftPaddles, function (sprite, o
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    sprite.vy = sprite.vy * -1
+    sprite.vy = Math.abs(sprite.vy)
+})
+sprites.onOverlap(SpriteKind.LeftPaddles, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.y = 22
 })
 let ball: Sprite = null
 let left_paddle: Sprite = null
